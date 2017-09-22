@@ -1,0 +1,17 @@
+development:
+  host: localhost
+  port: 3001
+  user: ricardo.viana@tjpi.jus.br
+  password: 12345678
+
+test:
+  host: localhost
+  port: 3001
+  user: ricardo.viana@tjpi.jus.br
+  password: 12345678
+
+production:
+  host: localhost
+  port: 3001
+  user: ricardo.viana@tjpi.jus.br
+  password: 12345678
