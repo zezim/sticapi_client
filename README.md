@@ -22,17 +22,41 @@ Or install it yourself as:
 
 ## Usage
 
-Generate config files
+Generate config file
 
 ```ruby
 rails generate sticapi_client:install
 ```
 
-## Development
+Configure data for your sticpai server
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```yml
+development:
+  host: localhost
+  port: 3001
+  user: user_of_sticapi
+  password: password_of_sticapi
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+test:
+  host: localhost
+  port: 3001
+  user: user_of_sticapi
+  password: password_of_sticapi
+
+production:
+  host: localhost
+  port: 3001
+  user: user_of_sticapi
+  password: password_of_sticapi
+```
+
+In your application_controller add:
+
+```ruby
+include SticapiController
+```
+
+to manipulate tokens sent and received from sticapi server
 
 ## Contributing
 
