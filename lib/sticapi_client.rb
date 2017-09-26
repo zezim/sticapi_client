@@ -34,20 +34,28 @@ module SticapiClient
       @expiry = ''
     end
 
+    def uri
+      "http://#{@host}:#{@port}#{@urn}"
+    end
+
     def get_token
       if @access_token.blank?
-        uri = ''
-        uri = URI.parse("http://#{@host}:#{@port}#{@urn}/auth/sign_in")
+        uri = URI.parse("#{self.uri}/auth/sign_in")
+        puts uri
         http = Net::HTTP.new(uri.host, uri.port)
         request = Net::HTTP::Post.new(uri.request_uri)
         request['email'] = @user
         request['password'] = @password
         response = http.request(request)
-        @access_token = response['access-token']
-        @client = response['client']
-        @uid = response['uid']
-        @expiry = response['expiry']
+        update_token(response)
       end
+    end
+
+    def update_token(response)
+      @access_token = response['access-token']
+      @client = response['client']
+      @uid = response['uid']
+      @expiry = response['expiry']
     end
   end
 end

@@ -17,7 +17,7 @@ module Devise
           }
           token = JWT.encode payload, secret, 'HS256'
 
-          uri = URI.parse("http://#{SticapiClient::SticapiClient.instance.host}:#{SticapiClient::SticapiClient.instance.port}/users/log_in")
+          uri = URI.parse("#{SticapiClient::SticapiClient.instance.uri}/users/log_in")
           http = Net::HTTP.new(uri.host, uri.port)
           request = Net::HTTP::Post.new(uri.request_uri)
           request['Content-Type'] = 'application/json'
@@ -26,6 +26,7 @@ module Devise
           request['uid'] = SticapiClient::SticapiClient.instance.uid
           request.body = { data: token }.to_json
           response = http.request(request)
+          SticapiClient::SticapiClient.instance.update_token(response)
 
           case response
             when Net::HTTPSuccess
