@@ -26,7 +26,7 @@ module SticapiClient
       @host = configs['host']
       @port = configs['port'] || 80
       @user = configs['user']
-      @urn = configs['urn'] || '/sticapi'
+      @urn = configs['urn']
       @password = configs['password']
       @access_token = ''
       @client = ''
@@ -35,7 +35,7 @@ module SticapiClient
     end
 
     def uri
-      "http://#{@host}:#{@port}#{@urn}"
+      "http://#{@host}:#{@port}/#{@urn}"
     end
 
     def get_token

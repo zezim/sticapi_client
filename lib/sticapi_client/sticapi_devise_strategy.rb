@@ -31,7 +31,7 @@ module Devise
           case response
             when Net::HTTPSuccess
               data = JSON.parse response.body
-              unless user = User.find_by(cpf: data['user']['cpf'])
+              unless user = User.find_by(username: data['user']['username'])
                 user = User.new
                 user.name = data['user']['name'] if user.respond_to? :name
                 user.username = data['user']['username'] if user.respond_to? :username
