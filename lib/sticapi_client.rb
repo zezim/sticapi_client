@@ -35,13 +35,12 @@ module SticapiClient
     end
 
     def uri
-      "http://#{@host}:#{@port}/#{@urn}"
+      "http://#{@host}:#{@port}#{'/' if @urn}#{@urn}"
     end
 
     def get_token
       if @access_token.blank?
         uri = URI.parse("#{self.uri}/auth/sign_in")
-        puts uri
         http = Net::HTTP.new(uri.host, uri.port)
         request = Net::HTTP::Post.new(uri.request_uri)
         request['email'] = @user
