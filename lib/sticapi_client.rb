@@ -11,6 +11,7 @@ module SticapiClient
     include Singleton
 
     attr_accessor :host
+    attr_accessor :urn
     attr_accessor :port
     attr_accessor :user
     attr_accessor :password
@@ -23,8 +24,9 @@ module SticapiClient
       configs = YAML.load_file("#{Rails.root}/config/sticapi.yml")[Rails.env]
       # configs = YAML.load_file("/home/ricardo/dev/sticapi_client/lib/generators/sticapi_client/templates/sticapi.yml")[Rails.env]
       @host = configs['host']
-      @port = configs['port']
+      @port = configs['port'] || 80
       @user = configs['user']
+      @urn = configs['urn'] || '/sticapi'
       @password = configs['password']
       @access_token = ''
       @client = ''
@@ -35,7 +37,7 @@ module SticapiClient
     def get_token
       if @access_token.blank?
         uri = ''
-        uri = URI.parse("http://#{@host}:#{@port}/auth/sign_in")
+        uri = URI.parse("http://#{@host}:#{@port}#{@urn}/auth/sign_in")
         http = Net::HTTP.new(uri.host, uri.port)
         request = Net::HTTP::Post.new(uri.request_uri)
         request['email'] = @user
