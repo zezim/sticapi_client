@@ -21,7 +21,7 @@ module Devise
           http = Net::HTTP.new(uri.host, uri.port)
           request = Net::HTTP::Post.new(uri.request_uri)
           request['Content-Type'] = 'application/json'
-          request['access_token'] = SticapiClient::SticapiClient.instance.access_token
+          request['access-token'] = SticapiClient::SticapiClient.instance.access_token
           request['client'] = SticapiClient::SticapiClient.instance.client
           request['uid'] = SticapiClient::SticapiClient.instance.uid
           request.body = { data: token }.to_json
