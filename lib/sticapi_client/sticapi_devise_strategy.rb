@@ -30,24 +30,28 @@ module Devise
 
           case response
             when Net::HTTPSuccess
-              data = JSON.parse response.body
-              unless user = User.find_by(username: data['user']['username'])
-                user = User.new
-                user.name = data['user']['name'] if user.respond_to? :name
-                user.username = data['user']['username'] if user.respond_to? :username
-                user.email = data['user']['email']
-                user.cpf = data['user']['cpf'] if user.respond_to? :cpf
-                user.unities = data['user']['unities'] if user.respond_to? :unities
-                user.password = params[:user][:password]
-                user.save
+              if data = JSON.parse response.body
+                unless user = User.find_by(username: data['user']['username'])
+                  user = User.new
+                  user.name = data['user']['name'] if user.respond_to? :name
+                  user.username = data['user']['username'] if user.respond_to? :username
+                  user.email = data['user']['email']
+                  user.cpf = data['user']['cpf'] if user.respond_to? :cpf
+                  user.unities = data['user']['unities'] if user.respond_to? :unities
+                  user.password = params[:user][:password]
+                  user.save
+                end
+                success!(user)
+                return
+              else
+                {'error' => "#{response.message}: Verifique seu usuário e/ou senha"}
+                fail
               end
-              success!(user)
-              return
             when Net::HTTPUnauthorized
-              {'error' => "#{response.message}: username and password set and correct?"}
+              {'error' => "#{response.message}: Verifique seu usuário e/ou senha"}
               fail
             when Net::HTTPServerError
-              {'error' => "#{response.message}: try again later?"}
+              {'error' => "#{response.message}: Tente novamente mais tarde"}
               fail
             else
               {'error' => response.message}
