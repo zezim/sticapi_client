@@ -5,6 +5,7 @@ require 'devise'
 require 'rails'
 require 'sticapi_client/sticapi_devise_strategy'
 require 'sticapi_client/sticapi_controller'
+require 'net/http'
 
 module SticapiClient
   class SticapiClient

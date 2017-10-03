@@ -1,5 +1,6 @@
 require 'devise/strategies/authenticatable'
 require 'jwt'
+require 'net/http'
 
 module Devise
   module Strategies
