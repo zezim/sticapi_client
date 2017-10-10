@@ -46,22 +46,17 @@ module Devise
                 success!(user)
                 return
               else
-                {'error' => "Verifique seu usuário e/ou senha"}
-                fail
+                return fail(:invalid)
               end
             when Net::HTTPUnauthorized
-              {'error' => "Verifique seu usuário e/ou senha"}
-              fail
+              return fail(:invalid)
             when Net::HTTPServerError
-              {'error' => "Tente novamente mais tarde"}
-              fail
+              return fail(:invalid)
             else
-              {'error' => response.message}
-              fail
+              return fail(:invalid)
           end
         end
-        {'error' => "Usuário ou senha não informados"}
-        fail
+        return fail(:invalid)
       end
     end
   end
