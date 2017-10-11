@@ -5,6 +5,7 @@ require 'devise'
 require 'rails'
 require 'sticapi_client/sticapi_devise_strategy'
 require 'sticapi_client/sticapi_controller'
+require 'sticapi_client/etjpi'
 require 'net/http'
 
 module SticapiClient
@@ -22,8 +23,8 @@ module SticapiClient
     attr_accessor :expiry
 
     def initialize
-      configs = YAML.load_file("#{Rails.root}/config/sticapi.yml")[Rails.env]
-      # configs = YAML.load_file("/home/ricardo/dev/sticapi_client/lib/generators/sticapi_client/templates/sticapi.yml")[Rails.env]
+      # configs = YAML.load_file("#{Rails.root}/config/sticapi.yml")[Rails.env]
+      configs = YAML.load_file("/home/ricardo/dev/sticapi_client/lib/generators/sticapi_client/templates/sticapi.yml")[Rails.env]
       @host = configs['host']
       @port = configs['port'] || 80
       @user = configs['user']
@@ -33,6 +34,7 @@ module SticapiClient
       @client = ''
       @uid = ''
       @expiry = ''
+      get_token
     end
 
     def uri
@@ -56,6 +58,23 @@ module SticapiClient
       @client = response['client']
       @uid = response['uid']
       @expiry = response['expiry']
+    end
+
+    def sticapi_request(route, options = {})
+      kind = options[:kind] || 'post'
+      uri = URI.parse("#{self.uri}#{route}")
+      http = Net::HTTP.new(uri.host, uri.port)
+      request = nil
+      request = Net::HTTP::Post.new(uri.request_uri) if kind == 'post'
+      request = Net::HTTP::Get.new(uri.request_uri) if kind == 'get'
+      request['Content-Type'] = 'application/json'
+      request['access-token'] = access_token
+      request['client'] = client
+      request['uid'] = uid
+      request.body = options.except(:kind).to_json
+      response = http.request(request)
+      update_token(response)
+      JSON.parse(response.body)
     end
   end
 end
