@@ -23,8 +23,8 @@ module SticapiClient
     attr_accessor :expiry
 
     def initialize
-      # configs = YAML.load_file("#{Rails.root}/config/sticapi.yml")[Rails.env]
-      configs = YAML.load_file("/home/ricardo/dev/sticapi_client/lib/generators/sticapi_client/templates/sticapi.yml")[Rails.env]
+      configs = YAML.load_file("#{Rails.root}/config/sticapi.yml")[Rails.env]
+      # configs = YAML.load_file("/home/ricardo/dev/sticapi_client/lib/generators/sticapi_client/templates/sticapi.yml")[Rails.env]
       @host = configs['host']
       @port = configs['port'] || 80
       @user = configs['user']
