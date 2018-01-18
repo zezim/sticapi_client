@@ -8,7 +8,7 @@ require 'sticapi_client/sticapi_controller'
 require 'sticapi_client/etjpi'
 require 'net/http'
 
-module SticapiClient
+module Sticapi
   class SticapiClient
     include Singleton
 

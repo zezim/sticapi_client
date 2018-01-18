@@ -11,6 +11,6 @@ module SticapiController
   end
 
   def get_token
-    SticapiClient::SticapiClient.instance.get_token
+    Sticapi::SticapiClient.instance.get_token
   end
 end
